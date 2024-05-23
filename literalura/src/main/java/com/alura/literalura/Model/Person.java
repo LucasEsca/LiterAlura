@@ -4,12 +4,14 @@
  */
 package com.alura.literalura.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +19,15 @@ public class Person {
     private Integer birthYear;
     private Integer deathYear;
     private String name;
+
+    // Getters, setters, and toString() method
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Integer getBirthYear() {
         return birthYear;
@@ -42,5 +53,13 @@ public class Person {
         this.name = name;
     }
 
-    
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", birthYear=" + birthYear +
+                ", deathYear=" + deathYear +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

@@ -4,6 +4,8 @@
  */
 package com.alura.literalura.Model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -12,9 +14,11 @@ import jakarta.persistence.OneToMany;
 import java.util.List;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Book {
     @Id
     private Long id;
+
     private String title;
 
     @ElementCollection
@@ -27,14 +31,27 @@ public class Book {
     private List<String> languages;
 
     private Boolean copyright;
+
+    @JsonAlias("media_type")
     private String mediaType;
+
+    @JsonAlias("download_count")
     private Integer downloadCount;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Person> authors;
+    private List<Person> author;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Person> translators;
+
+    // Getters, setters, and toString() method
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -92,12 +109,12 @@ public class Book {
         this.downloadCount = downloadCount;
     }
 
-    public List<Person> getAuthors() {
-        return authors;
+    public List<Person> getAuthor() {
+        return author;
     }
 
-    public void setAuthors(List<Person> authors) {
-        this.authors = authors;
+    public void setAuthor(List<Person> author) {
+        this.author = author;
     }
 
     public List<Person> getTranslators() {
@@ -108,5 +125,19 @@ public class Book {
         this.translators = translators;
     }
 
-    
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", subjects=" + subjects +
+                ", bookshelves=" + bookshelves +
+                ", languages=" + languages +
+                ", copyright=" + copyright +
+                ", mediaType='" + mediaType + '\'' +
+                ", downloadCount=" + downloadCount +
+                ", author=" + author +
+                ", translators=" + translators +
+                '}';
+    }
 }
