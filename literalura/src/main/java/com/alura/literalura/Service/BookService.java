@@ -4,42 +4,53 @@
  */
 package com.alura.literalura.Service;
 
+import com.alura.literalura.DTO.BookDto;
 import com.alura.literalura.Model.Book;
 import com.alura.literalura.Repository.BookRepository;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BookService {
+
     private final BookRepository bookRepository;
-    private final ApiClient apiClient;
 
     @Autowired
-    public BookService(BookRepository bookRepository, ApiClient apiClient) {
+    public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
-        this.apiClient = apiClient;
     }
 
-    public List<Book> getAllBooks() {
-        // Simplemente obtenemos todos los libros de la base de datos utilizando el repositorio.
-        return bookRepository.findAll();
-    }
-    
-    public Book searchBookByTitle(String title) {
-        // Buscamos un libro en la base de datos por su título.
-        return bookRepository.findByTitle(title).stream().findFirst().orElse(null);
+    public List<BookDto> obtenerTodosLosLibros() {
+        List<Book> libros = bookRepository.findAll();
+        return convertirABookDto(libros);
     }
 
-    public List<Book> fetchAndSaveBooks(String title) {
-    // Primero, buscamos libros en la base de datos por título.
-    List<Book> booksFromDb = bookRepository.findByTitle(title);
-    
-    // Retornamos los libros encontrados en la base de datos.
-    return booksFromDb;
-}
+    public List<BookDto> buscarLibrosPorTitulo(String titulo) {
+        List<Book> libros = bookRepository.findByTituloContainingIgnoreCase(titulo);
+        return convertirABookDto(libros);
+    }
 
+    public List<BookDto> buscarLibrosPorIdioma(String idioma) {
+        List<Book> libros = bookRepository.findByIdioma(idioma);
+        return convertirABookDto(libros);
+    }
+
+    private List<BookDto> convertirABookDto(List<Book> libros) {
+        return libros.stream()
+                .map(this::convertirABookDto)
+                .collect(Collectors.toList());
+    }
+
+    private BookDto convertirABookDto(Book libro) {
+        return new BookDto(
+                libro.getId(),
+                libro.getTitulo(),
+                libro.getIdioma(),
+                libro.getNumeroDescargas(),
+                libro.getAuthor().getNombre()
+        );
+    }
 }
 

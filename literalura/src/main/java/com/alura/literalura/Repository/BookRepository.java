@@ -12,6 +12,7 @@ import java.util.List;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-    List<Book> findByTitle(String title);
+    List<Book> findByTituloContainingIgnoreCase(String titulo);
+    List<Book> findByIdioma(String idioma);
 }
 

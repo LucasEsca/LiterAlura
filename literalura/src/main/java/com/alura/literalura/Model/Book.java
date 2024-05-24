@@ -4,47 +4,36 @@
  */
 package com.alura.literalura.Model;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import java.util.List;
+import jakarta.persistence.ManyToOne;
+import java.util.Objects;
+
+
 
 @Entity
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Book {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String titulo;
+    private String idioma;
+    private Integer numeroDescargas;
 
-    private String title;
+    @ManyToOne
+    private Author author;
+    
+    // Getters, Setters, Constructor, equals, hashCode y toString
 
-    @ElementCollection
-    private List<String> subjects;
+    public Book(String titulo, String idioma, Integer numeroDescargas, Author author) {
+        this.titulo = titulo;
+        this.idioma = idioma;
+        this.numeroDescargas = numeroDescargas;
+        this.author = author;
+    }
 
-    @ElementCollection
-    private List<String> bookshelves;
-
-    @ElementCollection
-    private List<String> languages;
-
-    private Boolean copyright;
-
-    @JsonAlias("media_type")
-    private String mediaType;
-
-    @JsonAlias("download_count")
-    private Integer downloadCount;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Person> author;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Person> translators;
-
-    // Getters, setters, and toString() method
     public Long getId() {
         return id;
     }
@@ -53,91 +42,79 @@ public class Book {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
-    public List<String> getSubjects() {
-        return subjects;
+    public String getIdioma() {
+        return idioma;
     }
 
-    public void setSubjects(List<String> subjects) {
-        this.subjects = subjects;
+    public void setIdioma(String idioma) {
+        this.idioma = idioma;
     }
 
-    public List<String> getBookshelves() {
-        return bookshelves;
+    public Integer getNumeroDescargas() {
+        return numeroDescargas;
     }
 
-    public void setBookshelves(List<String> bookshelves) {
-        this.bookshelves = bookshelves;
+    public void setNumeroDescargas(Integer numeroDescargas) {
+        this.numeroDescargas = numeroDescargas;
     }
 
-    public List<String> getLanguages() {
-        return languages;
-    }
-
-    public void setLanguages(List<String> languages) {
-        this.languages = languages;
-    }
-
-    public Boolean getCopyright() {
-        return copyright;
-    }
-
-    public void setCopyright(Boolean copyright) {
-        this.copyright = copyright;
-    }
-
-    public String getMediaType() {
-        return mediaType;
-    }
-
-    public void setMediaType(String mediaType) {
-        this.mediaType = mediaType;
-    }
-
-    public Integer getDownloadCount() {
-        return downloadCount;
-    }
-
-    public void setDownloadCount(Integer downloadCount) {
-        this.downloadCount = downloadCount;
-    }
-
-    public List<Person> getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
-    public void setAuthor(List<Person> author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
 
-    public List<Person> getTranslators() {
-        return translators;
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 83 * hash + Objects.hashCode(this.id);
+        hash = 83 * hash + Objects.hashCode(this.titulo);
+        hash = 83 * hash + Objects.hashCode(this.idioma);
+        hash = 83 * hash + Objects.hashCode(this.numeroDescargas);
+        hash = 83 * hash + Objects.hashCode(this.author);
+        return hash;
     }
 
-    public void setTranslators(List<Person> translators) {
-        this.translators = translators;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Book other = (Book) obj;
+        if (!Objects.equals(this.titulo, other.titulo)) {
+            return false;
+        }
+        if (!Objects.equals(this.idioma, other.idioma)) {
+            return false;
+        }
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        if (!Objects.equals(this.numeroDescargas, other.numeroDescargas)) {
+            return false;
+        }
+        return Objects.equals(this.author, other.author);
     }
 
     @Override
     public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", subjects=" + subjects +
-                ", bookshelves=" + bookshelves +
-                ", languages=" + languages +
-                ", copyright=" + copyright +
-                ", mediaType='" + mediaType + '\'' +
-                ", downloadCount=" + downloadCount +
-                ", author=" + author +
-                ", translators=" + translators +
-                '}';
+        return "Book{" + "id=" + id + ", titulo=" + titulo + ", idioma=" + idioma + ", numeroDescargas=" + numeroDescargas + ", author=" + author + '}';
     }
+    
 }
