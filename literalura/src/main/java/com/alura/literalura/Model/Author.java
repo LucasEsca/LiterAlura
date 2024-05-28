@@ -1,9 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.alura.literalura.Model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,10 +18,14 @@ public class Author {
     private Integer anoNacimiento;
     private Integer anoFallecimiento;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private Set<Book> books;
-
+    
     // Getters, Setters, Constructor, equals, hashCode y toString
+
+    public Author() {
+        // Constructor por defecto
+    }
 
     public Author(String nombre, Integer anoNacimiento, Integer anoFallecimiento, Set<Book> books) {
         this.nombre = nombre;

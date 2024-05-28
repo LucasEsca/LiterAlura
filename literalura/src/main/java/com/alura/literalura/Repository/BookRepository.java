@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package com.alura.literalura.Repository;
 
 import com.alura.literalura.Model.Book;
@@ -14,5 +10,5 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findByTituloContainingIgnoreCase(String titulo);
     List<Book> findByIdioma(String idioma);
+    List<Book> findByTitulo(String titulo);
 }
-

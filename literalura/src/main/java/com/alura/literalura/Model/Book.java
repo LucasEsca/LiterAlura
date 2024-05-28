@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.alura.literalura.Model;
 
 import jakarta.persistence.Entity;
@@ -26,6 +22,9 @@ public class Book {
     private Author author;
     
     // Getters, Setters, Constructor, equals, hashCode y toString
+    
+     public Book(){
+     }
 
     public Book(String titulo, String idioma, Integer numeroDescargas, Author author) {
         this.titulo = titulo;

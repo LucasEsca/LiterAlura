@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.alura.literalura.Model;
 
 import java.util.List;
@@ -10,7 +6,7 @@ public class GutendexResponse {
     private int count;
     private String next;
     private String previous;
-    private List<Book> results;
+    private List<BookFact> results;
 
     public int getCount() {
         return count;
@@ -36,13 +32,11 @@ public class GutendexResponse {
         this.previous = previous;
     }
 
-    public List<Book> getResults() {
+    public List<BookFact> getResults() {
         return results;
     }
 
-    public void setResults(List<Book> results) {
+    public void setResults(List<BookFact> results) {
         this.results = results;
     }
-
-    
 }
