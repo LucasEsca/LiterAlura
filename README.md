@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>README - Proyecto Literalura</title>
 </head>
 <body>
     <h1>Proyecto Literalura</h1>
@@ -35,8 +34,8 @@
     <h2>Autores</h2>
     <p>Este proyecto fue desarrollado por:</p>
     <ul>
-        <li href="https://github.com/garethbjohnson/gutendex" >Lucas Fair - Git</li>
-        <li href="https://www.linkedin.com/in/lucasivanfair/" >Lucas Fair - LinkedIn</li>
+        <li><a href="https://github.com/garethbjohnson/gutendex" >Lucas Fair - Git</a></li>
+        <li><a href="https://www.linkedin.com/in/lucasivanfair/" ></a> Lucas Fair - LinkedIn</li>
     </ul>
 </body>
 </html>
