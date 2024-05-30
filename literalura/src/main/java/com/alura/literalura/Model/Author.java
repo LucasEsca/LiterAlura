@@ -1,7 +1,8 @@
 package com.alura.literalura.Model;
 
-import jakarta.persistence.CascadeType;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,13 +19,12 @@ public class Author {
     private Integer anoNacimiento;
     private Integer anoFallecimiento;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
     private Set<Book> books;
     
     // Getters, Setters, Constructor, equals, hashCode y toString
 
     public Author() {
-        // Constructor por defecto
     }
 
     public Author(String nombre, Integer anoNacimiento, Integer anoFallecimiento, Set<Book> books) {

@@ -12,13 +12,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Principal implements CommandLineRunner {
-
-    @Autowired
-    private BookService bookService;
-    @Autowired
-    private AuthorService authorService;
+    private final BookService bookService;
+    private final AuthorService authorService;
     
     private static final int MAX_TITLE_LENGTH = 255;
+
+    @Autowired
+    public Principal(BookService bookService, AuthorService authorService) {
+        this.bookService = bookService;
+        this.authorService = authorService;
+    }
 
     @Override
     public void run(String... args) {
@@ -62,7 +65,7 @@ public class Principal implements CommandLineRunner {
                 case 5:
                     buscarLibrosPorIdioma(scanner);
                     break;
-                case 6:
+                case 0:
                     System.out.println("Saliendo...");
                     return;
                 default:
@@ -71,17 +74,12 @@ public class Principal implements CommandLineRunner {
         }
     }
 
-    private void buscarLibroPorTitulo(Scanner scanner) {
-        System.out.println("Ingrese el título del libro:");
-        String titulo = scanner.nextLine();
-        // Lógica para buscar libro por título
-    }
-
     private void listarTodosLosLibros() {
         List<Book> libros = bookService.obtenerTodosLosLibros();
         if (libros.isEmpty()) {
             System.out.println("No hay libros registrados.");
         } else {
+            System.out.println("-----LIBROS-----");
             System.out.println("Libros registrados:");
             for (Book libro : libros) {
                 System.out.println("Título: " + libro.getTitulo());
@@ -92,12 +90,13 @@ public class Principal implements CommandLineRunner {
             }
         }
     }
-    
+
     private void listarTodosLosAutores() {
          List<Author> autores = authorService.obtenerTodosLosAutores();
         if (autores.isEmpty()) {
             System.out.println("No hay autores registrados.");
         } else {
+            System.out.println("-----AUTORES-----");
             System.out.println("Autores registrados:");
             for (Author autor : autores) {
                 System.out.println("Nombre: " + autor.getNombre());
@@ -107,7 +106,7 @@ public class Principal implements CommandLineRunner {
             }
         }
     }
-    
+
     private void listarAutoresVivos(Scanner scanner) {
         System.out.println("Ingrese el año para listar autores vivos:");
         int year = scanner.nextInt();
@@ -115,37 +114,34 @@ public class Principal implements CommandLineRunner {
         if (autoresVivos.isEmpty()) {
             System.out.println("No hay autores vivos registrados después del año " + year + ".");
         } else {
+            System.out.println("-----AUTORES-----");
             System.out.println("Autores vivos registrados después del año " + year + ":");
-        for (Author autor : autoresVivos) {
-            System.out.println("Nombre: " + autor.getNombre());
-            System.out.println("Año de nacimiento: " + (autor.getAnoNacimiento() != null ? autor.getAnoNacimiento() : "N/A"));
-            System.out.println("Año de fallecimiento: " + (autor.getAnoFallecimiento() != null ? autor.getAnoFallecimiento() : "N/A"));
-            System.out.println("----------");
+            for (Author autor : autoresVivos) {
+                System.out.println("Nombre: " + autor.getNombre());
+                System.out.println("Año de nacimiento: " + (autor.getAnoNacimiento() != null ? autor.getAnoNacimiento() : "N/A"));
+                System.out.println("Año de fallecimiento: " + (autor.getAnoFallecimiento() != null ? autor.getAnoFallecimiento() : "N/A"));
+                System.out.println("----------");
             }
         }
     }
 
     private void buscarLibrosPorIdioma(Scanner scanner) {
-    List<Book> librosPorIdioma = bookService.buscarLibrosPorIdioma(scanner);
+        List<Book> librosPorIdioma = bookService.buscarLibrosPorIdioma(scanner);
 
-    if (librosPorIdioma.isEmpty()) {
-        System.out.println("No se encontraron libros en el idioma seleccionado.");
-    } else {
-        System.out.println("Libros en el idioma seleccionado:");
-        for (Book libro : librosPorIdioma) {
-            mostrarDetallesDelLibro(libro);
-            System.out.println("--------------------");
+        if (librosPorIdioma.isEmpty()) {
+            System.out.println("No se encontraron libros en el idioma seleccionado.");
+        } else {
+            System.out.println("-----LIBROS-----");
+            System.out.println("Libros en el idioma seleccionado:");
+            for (Book libro : librosPorIdioma) {
+                mostrarDetallesDelLibro(libro);
+                System.out.println("--------------------");
+            }
         }
     }
-}
 
-    private void buscarYAlmacenarLibroPorTituloDesdeApi(Scanner scanner) {
-        System.out.println("Ingrese el título del libro:");
-        String titulo = scanner.nextLine();
-        bookService.buscarYAlmacenarLibroPorTituloDesdeApi(titulo);
-    }
-    
     private void mostrarDetallesDelLibro(Book book) {
+        System.out.println("-----LIBROS-----");
         System.out.println("Detalles del libro almacenado:");
         System.out.println("Título: " + book.getTitulo());
         System.out.println("Autor: " + book.getAuthor().getNombre());

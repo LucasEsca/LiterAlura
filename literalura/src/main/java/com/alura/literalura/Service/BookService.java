@@ -1,6 +1,5 @@
 package com.alura.literalura.Service;
 
-import com.alura.literalura.DTO.BookDto;
 import com.alura.literalura.Model.Author;
 import com.alura.literalura.Model.AuthorFact;
 import com.alura.literalura.Model.Book;
@@ -9,23 +8,25 @@ import com.alura.literalura.Repository.AuthorRepository;
 import com.alura.literalura.Repository.BookRepository;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BookService {
 
-    @Autowired
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
+    private final ApiClient apiClient;
 
     @Autowired
-    private AuthorRepository authorRepository;
-
-    @Autowired
-    private ApiClient apiClient;
+    public BookService(BookRepository bookRepository, AuthorRepository authorRepository, ApiClient apiClient) {
+        this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
+        this.apiClient = apiClient;
+    }
 
     public List<Book> obtenerTodosLosLibros() {
         return bookRepository.findAll();
@@ -40,10 +41,15 @@ public class BookService {
             for (BookFact bookFact : librosFact) {
                 String tituloLibro = bookFact.title();
                 if (bookRepository.findByTitulo(tituloLibro).isEmpty()) {
-                    Author author = mapToEntity(bookFact.authors().get(0), new HashSet<>());
-
-                    // Guardar el autor en la base de datos antes de asociarlo al libro
-                    authorRepository.save(author);
+                    // Verificar si el autor ya existe en la base de datos
+                    Author author;
+                    Optional<Author> autorExistente = authorRepository.findByNombreWithBooks(bookFact.authors().get(0).name());
+                    if (autorExistente.isPresent()) {
+                        author = autorExistente.get();
+                    } else {
+                        author = mapToEntity(bookFact.authors().get(0), new HashSet<>());
+                        authorRepository.save(author);
+                    }
 
                     Book book = mapToEntity(bookFact, author);
                     book.setId(null); // Asegúrate de que el ID sea nulo para que se genere automáticamente
@@ -117,21 +123,5 @@ public class BookService {
     List<Book> librosPorIdioma = bookRepository.findByIdioma(idioma);
 
     return librosPorIdioma;
-}
-
-    private List<BookDto> convertirABookDto(List<Book> libros) {
-        return libros.stream()
-                .map(this::convertirABookDto)
-                .collect(Collectors.toList());
-    }
-
-    private BookDto convertirABookDto(Book libro) {
-        return new BookDto(
-                libro.getId(),
-                libro.getTitulo(),
-                libro.getIdioma(),
-                libro.getNumeroDescargas(),
-                libro.getAuthor().getNombre()
-        );
-    }
+    }  
 }
