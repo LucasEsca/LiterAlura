@@ -35,7 +35,7 @@
     <p>Este proyecto fue desarrollado por:</p>
     <ul>
         <li><a href="https://github.com/garethbjohnson/gutendex" >Lucas Fair - Git</a></li>
-        <li><a href="https://www.linkedin.com/in/lucasivanfair/" ></a> Lucas Fair - LinkedIn</li>
+        <li><a href="https://www.linkedin.com/in/lucasivanfair/" > Lucas Fair - LinkedIn</a></li>
     </ul>
 </body>
 </html>
